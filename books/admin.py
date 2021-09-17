@@ -7,4 +7,6 @@ class BookAdmin(admin.ModelAdmin):
     list_editable = ('title',)
     list_display_links = ('link',)
 
+
+
 admin.site.register(Author)

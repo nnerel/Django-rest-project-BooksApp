@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from .managers import BookQueryset, BookManager
+
 class Author(models.Model):
     first_name = models.CharField(max_length=155)
     last_name = models.CharField(max_length=155)
@@ -31,6 +33,9 @@ class Book(models.Model):
     added_by = models.ForeignKey(User, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
     in_stock = models.BooleanField(default=True)
+
+    objects = models.Manager()
+    books = BookManager()
 
     link = 'edit'
 
