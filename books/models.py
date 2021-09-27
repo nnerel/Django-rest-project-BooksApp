@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from .managers import BookQueryset, BookManager
 
@@ -30,7 +31,7 @@ class Book(models.Model):
     genre = models.CharField(max_length=20, choices=GENRE)
     description = models.TextField()
     image = models.ImageField(upload_to='images/', default='default.png')
-    added_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
     in_stock = models.BooleanField(default=True)
 
