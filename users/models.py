@@ -1,11 +1,15 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.conf import settings 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token 
 
 
 class CustomAccountManager(BaseUserManager):
 
-    def create_superuser(self, email, user_name, first_name, password, **other_fields):
+    def create_superuser(self, email, username, first_name, password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
@@ -16,25 +20,25 @@ class CustomAccountManager(BaseUserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('superuser status required is_superuser=True')
 
-        return self.create_user(email, user_name, first_name, password, **other_fields)
+        return self.create_user(email, username, first_name, password, **other_fields)
 
 
-    def create_user(self, email, user_name, first_name, password, **other_fields):
+    def create_user(self, email, username, first_name, password, **other_fields):
 
         if not email:
             raise ValueError('email is required')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name,
+        user = self.model(email=email, username=username,
                           first_name=first_name, **other_fields)
         user.set_password(password)
         user.save()
         return user
         
 
-class NewUser(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    user_name = models.CharField(max_length=120, unique=True)
+    username = models.CharField(max_length=120, unique=True)
     first_name = models.CharField(max_length=120, blank=True)
     about = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
@@ -44,4 +48,21 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name', 'first_name']
+    REQUIRED_FIELDS = ['username', 'first_name']
+
+    def __str__(self):
+        return """
+                    email: %s
+                    user name: %s
+                    first name: %s
+            """     % (self.email, self.username, self.first_name)
+
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+        print("Token created")
+    if not created:
+        print("Token error. Token error Fatal. Token not created")
