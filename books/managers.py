@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class BookQueryset(models.QuerySet):
     def is_available(self):
         return self.filter(in_stock=True)

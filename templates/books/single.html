@@ -1,0 +1,36 @@
+{% extends 'books/base.html' %}
+{% load static %}
+{% block title %}
+{{ book.name }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="pt-5">
+        <div class="row g-3">
+            <div class="col-md-5 col-lg-5 order-md-first bg-light pt-3">
+                <img class="img-fluid mx-auto d-block pt-5" alt="Responsive image" src="{{ book.image.url }}">
+            </div>
+            <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
+                <h1 class="mb-0 h4">{{ book.title }}</h1>
+                <p><span class="lead">{{ book.author }}</span></p>
+                <p>{{ book.genre }}</p>
+                <div class="border">
+                    <div class="col border-bottom">
+                        <div class="row p-3">
+                            <div class="col-6 text-muted"><small>{{ book.description }}</small></div>
+                            <div class="col-6 text-end"><span class="h4 fw-bold">
+                            {% if book.in_stock == True %}
+                                <img style="width: 70px; height: 70px;" src="/media/in_stock.jpg">
+                            {% else %}
+                            e
+                            {% endif %}
+                        </span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+{% endblock %}

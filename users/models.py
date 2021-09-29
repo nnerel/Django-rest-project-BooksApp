@@ -51,13 +51,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'first_name']
 
     def __str__(self):
-        return """
+        return  """
                     email: %s
                     user name: %s
                     first name: %s
-            """     % (self.email, self.username, self.first_name)
+                """ % (self.email, self.username, self.first_name)
 
-
+        
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

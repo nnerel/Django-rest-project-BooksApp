@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.urls import reverse
 
 from .managers import BookQueryset, BookManager
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=155)
@@ -16,19 +18,23 @@ class Author(models.Model):
         return "{} {}".format(self.first_name, self.last_name)
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=155, db_index=True)
+    slug = models.SlugField(max_length=155, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('books:genre_list', args=[self.slug])
+
+
 class Book(models.Model):
-
-    GENRE = (
-    ('thriller', 'thriller'),
-    ('fantasy', 'fantasy'),
-    ('scifi', 'sci-fi'),
-    ('horror', 'horror'),
-    )
-
-    title = models.CharField(max_length=155)
+    genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
+    title = models.CharField(max_length=155)
+    slug = models.SlugField(max_length=155)
     premiere = models.DateField()
-    genre = models.CharField(max_length=20, choices=GENRE)
     description = models.TextField()
     image = models.ImageField(upload_to='images/', default='default.png')
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='added_by')
@@ -43,6 +49,9 @@ class Book(models.Model):
     class Meta:
         verbose_name_plural = 'books'
         ordering = ('-premiere',)
+
+    def get_absolute_url(self):
+        return reverse('books:book_detail', args=[self.slug])
 
     def __str__(self):
         return self.title
