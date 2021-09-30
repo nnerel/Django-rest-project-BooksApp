@@ -14,9 +14,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('account/', include('allauth.urls')),
     path('index/', TemplateView.as_view(template_name='index.html')),
-#    url(r'^rest-auth/', include('rest_auth.urls')),
-#    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-#    path('^account/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:

@@ -4,22 +4,15 @@
 {% if genre %}{{ genre.name }}{% else %}Books{% endif %}
 {% endblock %}
 {% block content %}
-
-
 <main>
   <div class="album py-5 bg-light">
     <div class="container">
-
       <div class="pb-3 h5">{{genre.name|title}}</div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-
         {% for book in books %}
-        
-
           <div class="col">
             <div class="card shadow-sm">
             <img class="img-fluid" alt="Responsive image" src="{{ book.image.url }}">
-
               <div class="card-body">
                 <p class="card-text">
                   <a class="text-dark text-decoration-none" href="{{ book.get_absolute_url }}">{{ book.title }}</a>
@@ -30,14 +23,9 @@
               </div>
             </div>
           </div>
-     
         {% endfor %}
-
       </div>
     </div>
   </div>
-
-
 </main>
-
 {% endblock %}
