@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 
-from .managers import BookQueryset, BookManager
+from .managers import BookManager
 
 
 class Author(models.Model):
@@ -30,6 +30,12 @@ class Genre(models.Model):
 
 
 class Book(models.Model):
+    
+    COVER = (
+        ('HA', ('Hard')),
+        ('SO', ('Soft')),
+    )
+
     genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     title = models.CharField(max_length=155)
@@ -37,6 +43,8 @@ class Book(models.Model):
     premiere = models.DateField()
     description = models.TextField()
     image = models.ImageField(upload_to='images/', default='default.png')
+    cover = models.CharField(max_length=10, choices=COVER, default='Hard')
+    price = models.IntegerField()
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='added_by')
     created = models.DateTimeField(auto_now_add=True)
     in_stock = models.BooleanField(default=True)

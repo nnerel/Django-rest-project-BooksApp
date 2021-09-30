@@ -6,9 +6,6 @@ import logging
 from .models import Author, Genre, Book
 
 
-custom_signal = Signal()
-
-
 # logs for author object model
 author_log = logging.getLogger('author_log')
 author_log.setLevel(logging.DEBUG)
@@ -54,13 +51,3 @@ def genre_after_save(sender, instance, **kwargs):
 def book_after_save(sender, instance, **kwargs):
     print(f"{instance.title} created")
     book_log.info(f"Book created: {instance.title}")
-
-
-@receiver(request_finished)
-def page_loaded(sender, **kwargs):
-    print("Page loaded")
-
-
-@receiver(custom_signal)
-def func_name(sender, **kwargs):
-    print("Given name")

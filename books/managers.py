@@ -1,20 +1,17 @@
 from django.db import models
 
 
-class BookQueryset(models.QuerySet):
-    def is_available(self):
-        return self.filter(in_stock=True)
-
-    def is_disavailable(self):
-       return self.filter(in_stock=False)
-
-
 class BookManager(models.Manager):
     def get_queryset(self):
-        return BookQueryset(self.model, using=self._db)
+        return super(BookManager, self).get_queryset().filter(in_stock=True)
 
-    def is_disavailable(self):
-        return self.get_queryset().in_stock_true()
+    def in_stock_qty(self):
+        return super(BookManager, self).get_queryset().filter(in_stock=True).count()
 
-    def is_disavailable(self):
-        return self.get_queryset().in_stock_false()
+    def not_in_stock(self):
+        return super(BookManager, self).get_queryset().filter(in_stock=False)
+
+    def not_in_stock_qty(self):
+        return super(BookManager, self).get_queryset().filter(in_stock=False).count()
+
+  

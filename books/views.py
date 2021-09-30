@@ -1,11 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Author, Genre, Book
-from .signals import custom_signal
 
 
 def home(request):
-    custom_signal.send(sender=Author)
     return render(request, 'books/home.html', {})
+
+
+def expected(request):
+    books = Book.books.not_in_stock()
+    return render(request, 'books/expected.html', {"books":books})
 
 
 def book_all(request):

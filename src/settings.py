@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     
     'users',
+    'basket',
     'books',
     'books_api',
 ]
@@ -69,7 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'books.context_processors.book_genre'
+                'books.context_processors.book_genre',
+                'basket.context_processors.basket',
             ],
         },
     },

@@ -1,36 +1,46 @@
 {% extends 'books/base.html' %}
 {% load static %}
 {% block title %}
-{{ book.name }}
+{{ book.title }}
 {% endblock %}
 {% block content %}
 <div class="container">
     <main class="pt-5">
         <div class="row g-3">
-            <div class="col-md-5 col-lg-5 order-md-first bg-light pt-3">
-                <img class="img-fluid mx-auto d-block pt-5" alt="Responsive image" src="{{ book.image.url }}">
+            <div class="col-md-5 col-lg-5 order-md-first bg-light">
+                <img class="img-fluid mx-auto d-block mt-5" width="300px" height="300px" alt="Responsive image" src="{{ book.image.url }}">
             </div>
             <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
                 <h1 class="mb-0 h4">{{ book.title }}</h1>
-                <p><span class="lead">{{ book.author }}</span></p>
-                <p>{{ book.genre }}</p>
+                <p><span class="lead">{{ book.author }}</span> (Author)</p>
+                <p>{{ book.description}}</p>
                 <div class="border">
                     <div class="col border-bottom">
                         <div class="row p-3">
-                            <div class="col-6 text-muted"><small>{{ book.description }}</small></div>
-                            <div class="col-6 text-end"><span class="h4 fw-bold">
-                            {% if book.in_stock == True %}
-                                <img style="width: 70px; height: 70px;" src="/media/in_stock.jpg">
-                            {% else %}
-                            e
-                            {% endif %}
-                        </span></div>
+                            <div class="col-6">{{ book.get_cover_display }}back</div>
+                            <div class="col-6 text-end"><span class="h4 fw-bold">${{ book.price }}</span></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row p-3">
+                            <div class="col-6">
+                                <label for="select">Qty</label>
+                                <select id="select">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="col-6 text-end">
+                            <button type="button" id="add-button" value="{{book.id}}" class="btn btn-secondary btn-sm">
+                                Add to basket
+                            </button></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
 </div>
 {% endblock %}
